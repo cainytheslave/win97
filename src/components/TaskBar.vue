@@ -18,7 +18,7 @@ export default {
 </script>
 
 <template>
-  <nav class="taskbar window">
+  <nav class="taskbar window z-50">
     <div class="part">
       <button class="start-button">
         <img src="/logo.svg" alt="Logo" />Start
@@ -35,11 +35,8 @@ export default {
 
 <style scoped>
 .taskbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   display: flex;
+  width: 100%;
   align-items: stretch;
   justify-content: space-between;
 }
