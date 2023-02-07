@@ -1,13 +1,15 @@
 <script>
+import { tasks } from '../tasks.js';
+
 export default {
-  name: "TaskBar",
   data() {
     return {
       time: new Date(),
+      tasks,
     };
   },
   mounted() {
-    setInterval(() => this.setTime(), 1000);
+    setInterval(() => this.setTime(), 3000);
   },
   methods: {
     setTime() {
@@ -18,51 +20,28 @@ export default {
 </script>
 
 <template>
-  <nav class="taskbar window z-50">
-    <div class="part">
-      <button class="start-button">
-        <img src="/logo.svg" alt="Logo" />Start
+  <nav class="window z-50 justify-between flex">
+    <div class="flex items-center space-x-1">
+      <button class="flex items-center justify-around px-2">
+        <img src="/logo.svg" class="h-3" alt="Logo" />Start
       </button>
-      <span class="divider"></span>
+      <span class=""></span>
+      <div class="flex items-center">
+        <template v-for="task in tasks.tasklist" :key="task.id">
+          <button
+            class="flex items-center space-x-1 justify-around px-2"
+            @click="tasks.toggleWindow(task.id)"
+          >
+            <img :src="task.icon" class="h-4" alt="" />
+            <p>{{ task.title }}</p>
+          </button>
+        </template>
+      </div>
     </div>
-    <div>
-      <button class="start-button">
-        {{ time.getHours() + ":" + time.getMinutes() }}
+    <div class="">
+      <button class="">
+        {{ time.getHours() + ':' + time.getMinutes() }}
       </button>
     </div>
   </nav>
 </template>
-
-<style scoped>
-.taskbar {
-  display: flex;
-  width: 100%;
-  align-items: stretch;
-  justify-content: space-between;
-}
-
-.part {
-  display: flex;
-  align-items: stretch;
-}
-
-.divider {
-  width: 4px;
-  border-radius: 2px;
-  background-color: white;
-  border: 1px solid gray;
-  margin: 0 3px;
-}
-
-.start-button {
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 28px;
-}
-
-.start-button img {
-  height: 1rem;
-}
-</style>

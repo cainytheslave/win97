@@ -1,6 +1,20 @@
-<script setup>
-import Desktop from "./components/Desktop.vue";
-import TaskBar from "./components/TaskBar.vue";
+<script>
+import Desktop from './components/Desktop.vue';
+import TaskBar from './components/TaskBar.vue';
+
+import { tasks } from './tasks.js';
+
+export default {
+  data() {
+    return {
+      tasks,
+    };
+  },
+  components: {
+    Desktop,
+    TaskBar,
+  },
+};
 </script>
 
 <template>
@@ -8,7 +22,4 @@ import TaskBar from "./components/TaskBar.vue";
     <Desktop />
     <TaskBar />
   </div>
-</template>
-
-<style scoped>
-</style>
+</template>t
