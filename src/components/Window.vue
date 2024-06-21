@@ -2,10 +2,11 @@
 import { tasks } from '../tasks.js';
 
 export default {
-  props: ['id', 'isMin', 'isFocus', 'zLevel'],
+  props: ['id', 'isMin', 'isFocus', 'zLevel', 'status'],
   data() {
     return {
       tasks: tasks,
+      title: 'Loading...',
       isMax: false,
       isDragged: false,
       lastPos: null,
@@ -22,6 +23,8 @@ export default {
     this.pos.y = desktop.offsetHeight / 2 - clientRect.height / 2;
 
     window.onresize = this.handleResize;
+
+    this.title = tasks.getTaskById(this.id).title
   },
   methods: {
     maximize(event) {
@@ -104,9 +107,8 @@ export default {
 
 <template>
   <div
-    ref="window"
     v-show="!isMin"
-    @mousedown="tasks.focusWindow(id)"
+    ref="window"
     :class="{
       'w-full': isMax,
       'h-full': isMax,
@@ -129,36 +131,37 @@ export default {
       min-h-[4rem]
       max-h-[100%]
     "
+    @mousedown="tasks.focusWindow(id)"
   >
     <div
       :class="{ inactive: !isFocus }"
       class="title-bar cursor-move"
       @mousedown.self="handleMouseDown"
     >
-      <div class="title-bar-text" @mousedown="handleMouseDown">Todays song</div>
+      <div class="title-bar-text" @mousedown="handleMouseDown">{{ title }}</div>
       <div class="title-bar-controls cursor-pointer">
         <button
-          class="bg-win97"
           aria-label="Minimize"
+          class="bg-win97"
           @click="tasks.toggleWindow(id)"
         ></button>
         <button
-          class="bg-win97"
           :aria-label="isMax ? 'Restore' : 'Maximize'"
+          class="bg-win97"
           @click="maximize"
         ></button>
         <button
-          class="bg-win97"
           aria-label="Close"
+          class="bg-win97"
           @click="tasks.closeWindow(id)"
         ></button>
       </div>
     </div>
-    <div class="window-body overflow-hidden flex-1">
+    <div class="window-body overflow-auto flex-1 flex flex-col justify-start" v-bind="$attrs">
       <slot></slot>
     </div>
-    <div class="status-bar">
-      <p class="status-bar-field">Press F to pay respect</p>
+    <div v-if="status" class="status-bar">
+      <p class="status-bar-field">{{ status }}</p>
       <span class="w-4"></span>
     </div>
   </div>

@@ -36,7 +36,7 @@ export default {
       </button>
 
       <div class="flex items-center">
-        <template v-for="task in tasks.tasklist" :key="task.id">
+        <template v-for="task in tasks.taskList" :key="task.id">
           <button
             class="flex items-center space-x-1 justify-around px-2"
             @click="tasks.toggleWindow(task.id)"

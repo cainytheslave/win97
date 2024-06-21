@@ -1,5 +1,5 @@
 <script>
-import Window from './Window.vue';
+import Window from '../Window.vue';
 
 export default {
   props: ['id'],
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <template>
-  <Window :id="id">
+  <Window :id="id" status='Press F to pay respect'>
     <div v-if="song == null">
       <p>Asking Pink Floyd to compose a song...</p>
     </div>
@@ -33,15 +33,15 @@ export default {
       <p>{{ song.message }}</p>
     </div>
     <iframe
+      v-if="song != null && song.status == 200"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      allowfullscreen=""
+      frameBorder="0"
+      height="352"
+      loading="lazy"
       style="border-radius: 12px"
       v-bind:src="'https://open.spotify.com/embed/track/' + song.id"
       width="100%"
-      height="352"
-      frameBorder="0"
-      v-if="song != null && song.status == 200"
-      allowfullscreen=""
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy"
     ></iframe>
   </Window>
 </template>
