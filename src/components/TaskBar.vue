@@ -1,10 +1,14 @@
 <script>
 import { tasks } from '../tasks.js';
+import StartMenu from './StartMenu.vue';
 
 export default {
+  components: { StartMenu },
   data() {
     return {
       time: new Date(),
+      calOpen: false,
+      startOpen: false, 
       tasks,
     };
   },
@@ -15,24 +19,29 @@ export default {
     setTime() {
       this.time = new Date();
     },
+    zeroPad(num, places) {
+      return String(num).padStart(places, '0');
+    }
   },
 };
 </script>
 
 <template>
-  <nav class="window z-50 justify-between flex">
+  <nav class="window z-50 relative justify-between flex">
+    <StartMenu v-if="startOpen" @keydown.esc="startOpen = false"></StartMenu>
+
     <div class="flex items-center space-x-1">
-      <button class="flex items-center justify-around px-2">
-        <img src="/logo.svg" class="h-3" alt="Logo" />Start
+      <button class="flex items-center justify-center font-semibold gap-2 px-1" @click="startOpen = !startOpen">
+        <img alt="Logo" class="h-5" src="../assets/icons/windows.png" />Start
       </button>
-      <span class=""></span>
+
       <div class="flex items-center">
         <template v-for="task in tasks.tasklist" :key="task.id">
           <button
             class="flex items-center space-x-1 justify-around px-2"
             @click="tasks.toggleWindow(task.id)"
           >
-            <img :src="task.icon" class="h-4" alt="" />
+            <img :src="task.icon" alt="" class="h-4" />
             <p>{{ task.title }}</p>
           </button>
         </template>
@@ -40,7 +49,7 @@ export default {
     </div>
     <div class="">
       <button class="">
-        {{ time.getHours() + ':' + time.getMinutes() }}
+        {{ zeroPad(time.getHours(), 2) + ':' + zeroPad(time.getMinutes(), 2) }}
       </button>
     </div>
   </nav>

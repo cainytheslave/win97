@@ -5,13 +5,26 @@ export default {
   data() {
     return {
       tasks,
+      menu: null
     };
   },
+  methods: {
+    handleClick(e) {
+      e.preventDefault()
+      this.menu = {
+        x: e.x,
+        y: e.y
+      }
+    },
+    closeMenu(e) {
+      this.menu = null;
+    }
+  }
 };
 </script>
 
 <template>
-  <div id="desktop" class="bg-cyan-600 relative grow w-full">
+  <div @contextmenu="handleClick" id="desktop" class="bg-cyan-600 relative grow w-full">
     <div class="flex flex-col wrap">
       <button
         v-for="(app, key) in tasks.availableApps"
@@ -29,8 +42,18 @@ export default {
         "
       >
         <img :src="app.icon" :alt="app.title" />
-        <p>{{ app.title }}</p>
+        {{ app.title }}
       </button>
+      <div v-if="menu !== null"
+           @mouseleave="closeMenu"
+           :style="{top: menu.y + 'px', left: menu.x + 'px'}"
+           class="absolute flex items-stretch min-w-32 window flex-col origin-top-left">
+          <button>Test</button>
+          <button>Test</button>
+          <button>Test</button>
+          <button>Test</button>
+          <button>Test</button>
+      </div>
     </div>
     <template v-for="task of tasks.tasklist" :key="task.id">
       <component
